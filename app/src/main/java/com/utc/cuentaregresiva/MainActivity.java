@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         img.setAnimation(top_anim);
         cronometro.setAnimation(bottom_anim);
-
+        System.out.println("Esto es un cambio");
         // Crear la animacion
         new Handler().postDelayed(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

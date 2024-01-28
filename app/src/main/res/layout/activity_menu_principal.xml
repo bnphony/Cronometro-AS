@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context=".MenuPrincipal">
+    tools:context=".MenuPrincipal"
+    android:id="@+id/fragment_container">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,4 +76,17 @@
         android:text="Cerrar Sesion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/bottom_nav_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cnb_menuResource="@menu/bottom_nav_menu"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/round_corners"
+        app:cnb_unselectedColor="#000000"
+        app:cnb_radius="8dp"
+        app:cnb_orientationMode="horizontal"
+        android:layout_margin="30dp"
+        android:elevation="8dp"/>
 </RelativeLayout>

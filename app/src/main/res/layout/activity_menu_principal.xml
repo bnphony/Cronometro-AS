@@ -87,6 +87,6 @@
         app:cnb_unselectedColor="#000000"
         app:cnb_radius="8dp"
         app:cnb_orientationMode="horizontal"
-        android:layout_margin="30dp"
+        android:layout_margin="10dp"
         android:elevation="8dp"/>
 </RelativeLayout>

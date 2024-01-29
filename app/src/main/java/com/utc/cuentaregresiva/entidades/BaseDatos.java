@@ -84,4 +84,44 @@ public class BaseDatos extends SQLiteOpenHelper {
         }
         return false;
     }
+
+    // Proceso 6: Registrar un Evento
+    public boolean registrarEvento(String titulo, String descripcion, String fecha, String hora, int idUsuario) {
+        SQLiteDatabase miBdd = getWritableDatabase();
+        if (miBdd != null) {
+            miBdd.execSQL("INSERT INTO evento(titulo_evt, descripcion_evt, f_final_evt, hora_final_evt, fk_usuario) VALUES (" +
+                    "'"+titulo+"', '"+descripcion+"', '"+fecha+"', '"+hora+"','"+idUsuario+"');");
+            miBdd.close();
+            return true;
+        }
+        return false;
+    }
+
+    // Proceso 7: Conseguir Numero de Eventos Registrados
+    public int conseguirCountEventos() {
+        SQLiteDatabase idBdd = getReadableDatabase();
+        int id_maximo = 0;
+        Cursor cursor = idBdd.rawQuery("SELECT count(id_evt)+1 FROM evento", null);
+        if (cursor.moveToFirst()) {
+            idBdd.close();
+            id_maximo = cursor.getInt(0);
+        }
+        return id_maximo;
+    }
+
+    // Proceso 8: Consultar la lista de eventos registrados
+    public Cursor buscarEventos() {
+        SQLiteDatabase miBdd = getReadableDatabase();
+        Cursor eventos = miBdd.rawQuery("SELECT * FROM evento;", null);
+        if (eventos.moveToFirst()) {
+            miBdd.close();
+            return eventos;
+        } else {
+            return null;
+        }
+    }
+
+
+
+
 }

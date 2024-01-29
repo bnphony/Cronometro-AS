@@ -99,10 +99,11 @@ public class IniciarSesion extends AppCompatActivity {
         Cursor usuarioEncontrado = miBdd.validarUsuario(nombre_usuario, password);
         if (!nombre_usuario.isEmpty() && !password.isEmpty()) {
             if (usuarioEncontrado != null) {
+                int id_usuario = usuarioEncontrado.getInt(0);
                 String nombre = usuarioEncontrado.getString(1);
                 Toast.makeText(getApplicationContext(), "Bienvenido " + nombre, Toast.LENGTH_SHORT).show();
                 finish();
-                guardarSesion(check_sesion.isChecked(), nombre_usuario, password);
+                guardarSesion(check_sesion.isChecked(), id_usuario, nombre_usuario, password);
 
                 Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
                 startActivity(intent);
@@ -115,8 +116,9 @@ public class IniciarSesion extends AppCompatActivity {
         }
     }
 
-    public void guardarSesion(boolean inicio, String nombre_usuario, String password) {
+    public void guardarSesion(boolean inicio, int id_usuario, String nombre_usuario, String password) {
         editor.putBoolean(llave, inicio);
+        editor.putInt("id_usuario", id_usuario);
         editor.putString("nombre_usuario", nombre_usuario);
         editor.putString("password", password);
         editor.apply();

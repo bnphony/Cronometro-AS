@@ -4,20 +4,20 @@
 
     <item
         android:id="@+id/bottom_nav_dashboard"
-        android:title="Dashboard"
+        android:title="Eventos"
         android:icon="@drawable/bottom_nav_dashboard_icon"
         app:cnb_backgroundColor="@color/colorPrimary"
     />
 
     <item
         android:id="@+id/bottom_nav_manage"
-        android:title="Manage"
+        android:title="Crear"
         android:icon="@drawable/bottom_nav_manage_icon"
         app:cnb_backgroundColor="@color/colorPrimary"
         />
     <item
         android:id="@+id/bottom_nav_profile"
-        android:title="Profile"
+        android:title="Perfil"
         android:icon="@drawable/bottom_nav_profile_icon"
         app:cnb_backgroundColor="@color/colorPrimary"
         />

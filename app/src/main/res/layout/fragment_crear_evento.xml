@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee"
                         android:gravity="center"
-                        android:text="Registrar un Producto"
+                        android:text="Registrar un Evento"
                         android:textSize="24sp"
                         android:transitionName="logo_texto" />
                 </LinearLayout>

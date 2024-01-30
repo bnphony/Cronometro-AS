@@ -1,11 +1,18 @@
 package com.utc.cuentaregresiva.fragmentos;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,15 +35,27 @@ public class ListaEventos extends Fragment {
 
     Cursor eventos;
 
+    SharedPreferences preferencias;
+    SharedPreferences.Editor editor;
+
+    private int idUsuario = 0;
+
     public ListaEventos() {
         // Required empty public constructor
     }
 
+    public static ListaEventos newInstance(String data) {
+        ListaEventos fragment = new ListaEventos();
+        Bundle args = new Bundle();
+        args.putString("data_evento", data);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        preferencias = requireActivity().getSharedPreferences("inicio_sesion", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -61,15 +80,32 @@ public class ListaEventos extends Fragment {
                 String horaLimite = eventos.getString(4);
                 int fkUsuario = eventos.getInt(5);
 
+                Bundle bundle = new Bundle();
+                bundle.putInt("id_evento", idEvento);
+                bundle.putString("titulo", tituloEvento);
+                bundle.putString("descripcion", descripcionEvento);
+                bundle.putString("fecha", fechaLimite);
+                bundle.putString("hora", horaLimite);
+                bundle.putInt("fk_usuario", fkUsuario);
+
+                EditarEvento fragment = new EditarEvento();
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                // Permite retroceder al fragmento reemplazado
+//                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
         return vista;
     }
 
+
     private void consultarEventos() {
         listaEventos.clear();
-        eventos = bdd.buscarEventos();
+        eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0));
         if (eventos != null) {
             do {
                 int id = eventos.getInt(0);

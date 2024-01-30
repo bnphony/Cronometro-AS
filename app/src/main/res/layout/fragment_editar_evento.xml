@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragmentos.PerfilUsuario"
-    android:background="#C31919">
+    android:background="#FBF1F1"
+    tools:context=".fragmentos.EditarEvento">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,7 +21,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- Encabezado -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bungee"
                         android:gravity="center"
-                        android:text="Editar Perfil del Usuario"
+                        android:text="Editar Evento"
                         android:textSize="24sp"
                         android:transitionName="logo_texto" />
                 </LinearLayout>
@@ -59,60 +58,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/wave" />
-            <!-- FIN ENCABEZADO -->
 
-            <!--   Formulario de Editar Perfil         -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Nombre y Apellido -->
+                <TextView
+                    android:id="@+id/txt_id_evento"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:gravity="center_vertical"
+                    android:text="Id del Evento: "
+                    android:textColor="#635F5F"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_nombre_usu"
+                    android:id="@+id/txt_titulo_evt"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese un Nombre Completo">
+                    android:hint="Ingrese el Titulo">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_nombre_usu"
+                        android:id="@+id/edt_titulo_evt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Nombre de Usuario !UNICO -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_nombre_usuario_usu"
+                    android:id="@+id/txt_descripcion_evt"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese un Nombre de Usuario">
+                    android:hint="Ingrese una Descripcion">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_nombre_usuario_usu"
+                        android:id="@+id/edt_descripcion_evt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"></com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_email_usu"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese un Email">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_email_usu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
-                <!-- Password -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -120,32 +116,32 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btn_cambiar_password"
-                        android:layout_width="164dp"
+                        android:id="@+id/btn_fecha"
+                        android:layout_width="154dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:background="#3658DF"
-                        android:text="Cambiar Password"
+                        android:text="Fecha Limite"
                         android:textColor="#FFFFFF" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txt_password"
+                        android:id="@+id/txt_f_final"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:hint="Ingrese el password"
-                        app:passwordToggleEnabled="true">
+                        android:hint="Ingrese la Fecha Limite">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edt_password"
+                            android:id="@+id/edt_f_final"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"></com.google.android.material.textfield.TextInputEditText>
+                            android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,18 +150,71 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btn_guardar"
+                        android:id="@+id/btn_hora"
+                        android:layout_width="154dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="#3658DF"
+                        android:text="Hora Limite"
+                        android:textColor="#FFFFFF" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_hora_final"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:hint="Ingrese la Hora Limite">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_hora_final"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_editar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#3658DF"
                         android:drawableLeft="@android:drawable/ic_menu_save"
                         android:paddingLeft="20dp"
-                        android:text="Guardar"
+                        android:text="Editar"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:id="@+id/btn_eliminar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#DD4848"
+                        android:drawableLeft="@android:drawable/ic_delete"
+                        android:paddingLeft="20dp"
+                        android:text="Eliminar"
                         android:textColor="#FFFFFF" />
 
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/btn_cancelar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#DD4848"
+                    android:paddingLeft="20dp"
+                    android:text="Cancelar"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </LinearLayout>

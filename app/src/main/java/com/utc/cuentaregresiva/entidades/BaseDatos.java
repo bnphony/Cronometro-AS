@@ -98,10 +98,10 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     // Proceso 7: Conseguir Numero de Eventos Registrados
-    public int conseguirCountEventos() {
+    public int conseguirCountEventos(int fkUsuario) {
         SQLiteDatabase idBdd = getReadableDatabase();
         int id_maximo = 0;
-        Cursor cursor = idBdd.rawQuery("SELECT count(id_evt)+1 FROM evento", null);
+        Cursor cursor = idBdd.rawQuery("SELECT count(id_evt)+1 FROM evento WHERE fk_usuario = " + fkUsuario, null);
         if (cursor.moveToFirst()) {
             idBdd.close();
             id_maximo = cursor.getInt(0);
@@ -110,15 +110,93 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     // Proceso 8: Consultar la lista de eventos registrados
-    public Cursor buscarEventos() {
+    public Cursor buscarEventos(int idUsuario) {
         SQLiteDatabase miBdd = getReadableDatabase();
-        Cursor eventos = miBdd.rawQuery("SELECT * FROM evento;", null);
+        Cursor eventos = miBdd.rawQuery("SELECT * FROM evento WHERE fk_usuario = " + idUsuario, null);
         if (eventos.moveToFirst()) {
             miBdd.close();
             return eventos;
         } else {
             return null;
         }
+    }
+
+    // Proceso 9: Actualizar informacion de un evento
+    public boolean actualizarEvento(int idEvento, String titulo, String descripcion, String fecha, String hora) {
+        SQLiteDatabase bdd = getWritableDatabase();
+        if (bdd != null) {
+            bdd.execSQL("UPDATE evento SET " +
+                    "titulo_evt = '"+titulo+"', " +
+                    "descripcion_evt = '"+descripcion+"', " +
+                    "f_final_evt = '"+fecha+"', " +
+                    "hora_final_evt = '"+hora+"' " +
+                    "WHERE id_evt = " + idEvento);
+            bdd.close();
+            return true;
+        }
+        return false;
+    }
+
+    // Proceso 10: Eliminar un Evento
+    public boolean eliminarEvento(int idEvento) {
+        SQLiteDatabase bdd = getWritableDatabase();
+        if (bdd != null) {
+            bdd.execSQL("DELETE FROM evento WHERE id_evt = " + idEvento);
+            bdd.close();
+            return true;
+        }
+        return false;
+    }
+
+    // Proceso 11: Obtener la informacion de un Usuario
+    public Cursor obtenerUsuario(int idUsuario) {
+        SQLiteDatabase miBdd = getReadableDatabase();
+        Cursor usuario = miBdd.rawQuery("SELECT * FROM usuario WHERE id_usu = " + idUsuario, null);
+        if (usuario.moveToFirst()) {
+            return usuario;
+        } else {
+            return null;
+        }
+    }
+
+    // Proceso 12: Actualizar informacion del Usuario, excepto el Password
+    public boolean actualizarPerfil(int idUsuario, String nombre, String nombre_usuario, String email) {
+        SQLiteDatabase bdd = getWritableDatabase();
+        if (bdd != null) {
+            bdd.execSQL("UPDATE usuario SET " +
+                    "nombre_usu = '"+nombre+"', " +
+                    "nombre_usuario_usu = '"+nombre_usuario+"', " +
+                    "email_usu = '"+email+"' " +
+                    "WHERE id_usu = " + idUsuario);
+            bdd.close();
+            return true;
+        }
+        return false;
+    }
+
+    // Proceso 13: Comprobar si el nombre de usuario esta disponible cuando se actualiza un Usuario
+    public boolean validarNombreUsuarioExistente(int idUsuario, String nombre_usuario) {
+        SQLiteDatabase nombreBdd = getReadableDatabase();
+        Cursor cursor = nombreBdd.rawQuery("SELECT nombre_usuario_usu FROM usuario " +
+                "WHERE nombre_usuario_usu = '"+nombre_usuario+"' AND id_usu != " + idUsuario, null);
+        if (cursor.moveToFirst()) {
+            nombreBdd.close();
+            return true;
+        }
+        return false;
+    }
+
+    // Proceso 14: Actualizar Password
+    public boolean actualizarPassword(int idUsuario, String password) {
+        SQLiteDatabase bdd = getWritableDatabase();
+        if (bdd != null) {
+            bdd.execSQL("UPDATE usuario set " +
+                    "password_usu = '"+password+"' " +
+                    "WHERE id_usu = " + idUsuario);
+            bdd.close();
+            return true;
+        }
+        return false;
     }
 
 

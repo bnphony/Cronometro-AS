@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.utc.cuentaregresiva.fragmentos.CrearEvento;
 import com.utc.cuentaregresiva.fragmentos.EditarEvento;
 import com.utc.cuentaregresiva.fragmentos.ListaEventos;
@@ -32,6 +33,7 @@ public class MenuPrincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
+        AndroidThreeTen.init(this);
 
         // Relacionar los elementos logicos con los elementos graficos
         chipNavigationBar = findViewById(R.id.bottom_nav_menu);
@@ -91,14 +93,4 @@ public class MenuPrincipal extends AppCompatActivity {
         });
     }
 
-    public void cerrarSesion(View view) {
-        finish();
-        editor.putBoolean("sesion", false);
-        editor.putString("nombre_usuario", "");
-        editor.putString("password", "");
-        editor.apply();
-        Toast.makeText(getApplicationContext(), "Sesion Finalizada", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplicationContext(), IniciarSesion.class);
-        startActivity(intent);
-    }
 }

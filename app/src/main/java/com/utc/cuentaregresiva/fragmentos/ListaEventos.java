@@ -3,12 +3,16 @@ package com.utc.cuentaregresiva.fragmentos;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,14 +26,22 @@ import android.widget.Toast;
 
 import com.utc.cuentaregresiva.R;
 import com.utc.cuentaregresiva.entidades.BaseDatos;
+import com.utc.cuentaregresiva.entidades.Evento;
+import com.utc.cuentaregresiva.entidades.EventosAdapter;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ListaEventos extends Fragment {
 
     private ListView lista_eventos;
     private ArrayList<String> listaEventos = new ArrayList<>();
+
+    private List<Evento> elementos = new ArrayList<>();
 
     BaseDatos bdd;
 
@@ -64,12 +76,12 @@ public class ListaEventos extends Fragment {
         // Inflate the layout for this fragment
         View vista =  inflater.inflate(R.layout.fragment_lista_eventos, container, false);
 
-        // Mapear o relacionar los componentes logicos con los componentes graficos
-        lista_eventos = (ListView) vista.findViewById(R.id.lista_eventos);
-        bdd = new BaseDatos(getContext());
-        consultarEventos();
+//        inicializarLista();
 
-        lista_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bdd = new BaseDatos(getContext());
+        consultarEventos(vista);
+
+        /*lista_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 eventos.moveToPosition(position);
@@ -98,13 +110,14 @@ public class ListaEventos extends Fragment {
                 transaction.commit();
             }
         });
-
+*/
         return vista;
     }
 
 
-    private void consultarEventos() {
-        listaEventos.clear();
+
+    private void consultarEventos(View vista) {
+        elementos.clear();
         eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0));
         if (eventos != null) {
             do {
@@ -113,13 +126,40 @@ public class ListaEventos extends Fragment {
                 String descripcion = eventos.getString(2);
                 String fecha = eventos.getString(3);
                 String hora = eventos.getString(4);
-                listaEventos.add(id + "\nTitulo: " + titulo);
-                ArrayAdapter<String> adaptadorEventos = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listaEventos);
-                // Asignar el adaptador a lista de Productos
-                lista_eventos.setAdapter(adaptadorEventos);
+                int fkUsuario = eventos.getInt(5);
+                elementos.add(new Evento(id, "#775477", titulo, descripcion, fecha, hora, "Activo", fkUsuario));
+
+                EventosAdapter eventosAdapter = new EventosAdapter(elementos, getContext(), new EventosAdapter.OnItemClickListener() {
+                    @Override
+                    public void onIntemClick(Evento item) {
+                        moveToDescription(item);
+                    }
+                });
+                RecyclerView recyclerView = vista.findViewById(R.id.lista_eventos);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerView.setAdapter(eventosAdapter);
             } while (eventos.moveToNext());
         } else {
             Toast.makeText(getContext(), "No existen Eventos registrados", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void moveToDescription(Evento item) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("evento_item", item);
+
+        EditarEvento fragment = new EditarEvento();
+        fragment.setArguments(bundle);
+
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        // Permite retroceder al fragmento reemplazado
+//      transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+
+
+
 }

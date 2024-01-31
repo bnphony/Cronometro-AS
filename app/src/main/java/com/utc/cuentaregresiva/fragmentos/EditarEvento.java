@@ -25,6 +25,10 @@ import android.widget.Toast;
 
 import com.utc.cuentaregresiva.R;
 import com.utc.cuentaregresiva.entidades.BaseDatos;
+import com.utc.cuentaregresiva.entidades.Evento;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,6 +58,8 @@ public class EditarEvento extends Fragment {
     private Button btn_fecha, btn_hora, btn_editar, btn_eliminar, btn_cancelar;
 
     private int dia, mes, year;
+
+    private boolean esHoy = false;
 
     private BaseDatos bdd;
 
@@ -93,12 +99,13 @@ public class EditarEvento extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            idEvento = getArguments().getInt("id_evento", 0);
-            titulo = getArguments().getString("titulo", "");
-            descripcion = getArguments().getString("descripcion", "");
-            fechaLimite = getArguments().getString("fecha", "");
-            horaLimite = getArguments().getString("hora", "");
-            fkUsuario = getArguments().getInt("fk_usuario", 0);
+            Evento evento = (Evento) getArguments().getSerializable("evento_item");
+            idEvento = evento.getIdEvento();
+            titulo = evento.getTitulo();
+            descripcion = evento.getDescripcion();
+            fechaLimite = evento.getFecha();
+            horaLimite = evento.getHora();
+            fkUsuario = evento.getFkUsuario();
         }
         bdd = new BaseDatos(getContext());
     }
@@ -204,23 +211,12 @@ public class EditarEvento extends Fragment {
             edt_hora_final.setError(null);
             auxiliarFecha = f_final.split("-");
             // Condicion para comprobar si la fecha es igual o mayor a la fecha actual
-            if (Integer.parseInt(auxiliarFecha[0]) >= fechas[0] && Integer.parseInt(auxiliarFecha[1]) >= fechas[1]
-                    && Integer.parseInt(auxiliarFecha[2]) >= fechas[2]) {
-                edt_f_final.setError(null); // Quitar el mensaje de error
-                auxiliarHora = hora_final.split(":");
-                if (Integer.parseInt(auxiliarHora[0]) >= currentHour && Integer.parseInt(auxiliarHora[1]) >= currentMinute) {
-                    edt_hora_final.setError(null);
-                    bdd.actualizarEvento(idEvento, nuevoTitulo, nuevaDescripcion, f_final, hora_final);
-                    Toast.makeText(getContext(), "Evento Actualizado Correctamente!", Toast.LENGTH_SHORT).show();
-                } else {
-                    edt_hora_final.setError("La hora ya no esta disponible!");
-                    Toast.makeText(getContext(), "La hora ya no esta disponible", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                edt_f_final.setError("La fecha debe ser igual o mayor a la fecha actual");
-                Toast.makeText(getContext(), "La fecha debe ser igual o mayor a la fecha actual", Toast.LENGTH_SHORT).show();
-            }
+            System.out.println(String.format("Mest: %s, Dia: %s", Integer.parseInt(auxiliarFecha[1]), Integer.parseInt(auxiliarFecha[2])));
+            System.out.println(String.format("Mest: %s, Dia: %s", Integer.parseInt(auxiliarFecha[1]), Integer.parseInt(auxiliarFecha[2])));
+            edt_f_final.setError(null); // Quitar el mensaje de error
+            edt_hora_final.setError(null);
+            bdd.actualizarEvento(idEvento, nuevoTitulo, nuevaDescripcion, f_final, hora_final);
+            Toast.makeText(getContext(), "Evento Actualizado Correctamente!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Debe llenar todos los campos!", Toast.LENGTH_SHORT).show();
         }
@@ -252,6 +248,7 @@ public class EditarEvento extends Fragment {
 
     // Proceso 3: Seleccionar una Fecha con DatePickerDialog
     private void seleccionarFecha() {
+        final LocalDate fechaActual = LocalDate.now();
         final Calendar c = Calendar.getInstance();
         // Estas tres variables son para colocar la fecha por defecto
         dia = c.get(Calendar.DAY_OF_MONTH);
@@ -262,7 +259,19 @@ public class EditarEvento extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                edt_f_final.setText(y + "-" + (m + 1) + "-" + d);
+                LocalDate fechaSeleccionada = LocalDate.of(y, m+1, d);
+
+                if (fechaSeleccionada.isEqual(fechaActual) || fechaSeleccionada.isAfter(fechaActual)) {
+                    edt_f_final.setError(null);
+                    String mesFormat = String.format("%02d", m + 1);
+                    String diaFormat = String.format("%02d", d);
+                    edt_f_final.setText(y + "-" + mesFormat + "-" + diaFormat);
+                    edt_hora_final.setText("");
+                } else {
+                    edt_f_final.setError("La fecha debe ser igual o mayor a la fecha actual");
+                    edt_f_final.setText("");
+                    Toast.makeText(getContext(), "La Fecha debe ser igual o mayor que la fecha actual!", Toast.LENGTH_SHORT).show();
+                }
             }
         }, year, mes, dia);
         datePickerDialog.show();
@@ -270,19 +279,44 @@ public class EditarEvento extends Fragment {
 
     // Proceso 4: Seleccionar una Hora con TimePickerDialog
     private void seleccionarHora() {
-        final Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
+        String fechaLimite = edt_f_final.getText().toString();
+        System.out.println("FECHA SELECCIONADA: " + fechaLimite);
+        if (!fechaLimite.isEmpty()) {
+            final LocalDate fechaSeleccionada = LocalDate.parse(fechaLimite);
 
-        // Este estilo esta en res/stsyle(21) -> DialogTheme
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
-                String formatoCorregido = formatTime(hours, minutes);
-                edt_hora_final.setText(formatoCorregido);
-            }
-        }, currentHour, currentMinute, true);
-        timePickerDialog.show();
+            final Calendar calendar = Calendar.getInstance();
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = calendar.get(Calendar.MINUTE);
+
+            // Este estilo esta en res/stsyle(21) -> DialogTheme
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
+                    LocalDate fechaActual = LocalDate.now();
+                    LocalTime horaSeleccionada = LocalTime.of(hours, minutes);
+                    LocalTime horaActual = LocalTime.now();
+                    if (fechaSeleccionada.isEqual(fechaActual)) {
+                        if (horaSeleccionada.isAfter(horaActual)) {
+                            edt_hora_final.setError(null);
+                            String formatoCorregido = formatTime(hours, minutes);
+                            edt_hora_final.setText(formatoCorregido);
+                        } else {
+                            edt_hora_final.setError("La tiempo limite tiene que ser mayor al tiempo actual");
+                            Toast.makeText(getContext(), "El tiempo limite tiene que ser mayor al tiempo actual", Toast.LENGTH_SHORT).show();
+                            edt_hora_final.setText("");
+                        }
+                    } else {
+                        edt_hora_final.setError(null);
+                        String formatoCorregido = formatTime(hours, minutes);
+                        edt_hora_final.setText(formatoCorregido);
+                    }
+                }
+            }, currentHour, currentMinute, true);
+            timePickerDialog.show();
+        } else {
+            edt_hora_final.setError("Seleccione una Fecha");
+            Toast.makeText(getContext(), "Primero debe seleccionar una Fecha Limite", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Proceso 5: Dar formato a la hora seleccionada HH:mm

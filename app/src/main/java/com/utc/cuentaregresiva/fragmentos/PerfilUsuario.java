@@ -2,6 +2,7 @@ package com.utc.cuentaregresiva.fragmentos;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.utc.cuentaregresiva.IniciarSesion;
 import com.utc.cuentaregresiva.R;
 import com.utc.cuentaregresiva.entidades.BaseDatos;
 
@@ -33,9 +35,10 @@ public class PerfilUsuario extends Fragment {
     private String mParam2;
 
     private EditText edt_nombre_usu, edt_nombre_usuario_usu, edt_email_usu, edt_password;
-    private Button btn_cambiar_password, btn_guardar;
+    private Button btn_cambiar_password, btn_guardar, btn_cerrar_sesion;
 
     SharedPreferences preferencias;
+    SharedPreferences.Editor editor;
     private int idUsuario = 0;
     private String nombre, nombre_usuario, email, password, confirm_password;
 
@@ -64,6 +67,7 @@ public class PerfilUsuario extends Fragment {
         }
         preferencias = requireActivity().getSharedPreferences("inicio_sesion", Context.MODE_PRIVATE);
         idUsuario = preferencias.getInt("id_usuario", 0);
+        editor = preferencias.edit();
 
         bdd = new BaseDatos(getContext());
     }
@@ -83,6 +87,14 @@ public class PerfilUsuario extends Fragment {
 
         btn_cambiar_password = vista.findViewById(R.id.btn_cambiar_password);
         btn_guardar = vista.findViewById(R.id.btn_guardar);
+        btn_cerrar_sesion = vista.findViewById(R.id.btn_cerrar_sesion);
+
+        btn_cerrar_sesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cerrarSesion();
+            }
+        });
 
         btn_guardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +190,18 @@ public class PerfilUsuario extends Fragment {
         } else {
             Toast.makeText(getContext(), "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Proceso 3: Cerrar Sesion
+    private void cerrarSesion() {
+        requireActivity().finish();
+        editor.putBoolean("sesion", false);
+        editor.putString("nombre_usuario", "");
+        editor.putString("password", "");
+        editor.apply();
+        Toast.makeText(getContext(), "Sesion Finalizada", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), IniciarSesion.class);
+        startActivity(intent);
     }
 
 }

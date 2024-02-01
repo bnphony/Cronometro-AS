@@ -1,5 +1,7 @@
 package com.utc.cuentaregresiva.entidades;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 // Implements Serializable -> pasar eventos
@@ -12,8 +14,10 @@ public class Evento implements Serializable {
     private String hora;
     private String estado;
     private int fkUsuario;
+    private Bitmap imagen;
 
-    public Evento(int idEvento, String color, String titulo, String descripcion, String fecha, String hora, String estado, int fkUsuario) {
+
+    public Evento(int idEvento, String color, String titulo, String descripcion, String fecha, String hora, String estado, int fkUsuario, Bitmap imagen) {
         this.idEvento = idEvento;
         this.color = color;
         this.titulo = titulo;
@@ -22,6 +26,15 @@ public class Evento implements Serializable {
         this.hora = hora;
         this.estado = estado;
         this.fkUsuario = fkUsuario;
+        this.imagen = imagen;
+    }
+
+    public Bitmap getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Bitmap imagen) {
+        this.imagen = imagen;
     }
 
     public int getIdEvento() {

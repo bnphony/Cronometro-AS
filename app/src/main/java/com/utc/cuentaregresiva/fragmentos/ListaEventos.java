@@ -3,6 +3,8 @@ package com.utc.cuentaregresiva.fragmentos;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -127,7 +129,13 @@ public class ListaEventos extends Fragment {
                 String fecha = eventos.getString(3);
                 String hora = eventos.getString(4);
                 int fkUsuario = eventos.getInt(5);
-                elementos.add(new Evento(id, "#775477", titulo, descripcion, fecha, hora, "Activo", fkUsuario));
+                byte[] imagenBlob = eventos.getBlob(6);
+                Bitmap imagenBitmap = null;
+                if (imagenBlob != null) {
+                    imagenBitmap = BitmapFactory.decodeByteArray(imagenBlob, 0, imagenBlob.length);
+                }
+
+                elementos.add(new Evento(id, "#775477", titulo, descripcion, fecha, hora, "Activo", fkUsuario, imagenBitmap));
 
                 EventosAdapter eventosAdapter = new EventosAdapter(elementos, getContext(), new EventosAdapter.OnItemClickListener() {
                     @Override

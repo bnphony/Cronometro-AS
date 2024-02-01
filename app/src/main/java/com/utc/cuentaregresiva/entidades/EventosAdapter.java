@@ -80,11 +80,17 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.ViewHold
         }
 
         void bindData(final Evento item) {
-            img_cv.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
+//            img_cv.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
+
             txt_titulo.setText(item.getTitulo());
             txt_fecha.setText(item.getFecha() + " " + item.getHora());
             txt_tiempo.setText(calcularTiempoRestante(item.getFecha(), item.getHora()));
 
+            if (item.getImagen() != null) {
+                img_cv.setImageBitmap(item.getImagen());
+            } else {
+                img_cv.setImageResource(R.drawable.reloj);
+            }
             long totalMilis = parseDuration(txt_tiempo.getText().toString());
 
             countDownTimer = new CountDownTimer(totalMilis, 1000) {

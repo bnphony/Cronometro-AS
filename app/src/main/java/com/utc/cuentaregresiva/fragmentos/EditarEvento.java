@@ -4,12 +4,17 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -34,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,14 +60,19 @@ public class EditarEvento extends Fragment {
 
     private int idEvento, fkUsuario;
     private String titulo, descripcion, fechaLimite, horaLimite;
+    private Bitmap imagen;
 
     private TextView txt_id_evento;
     private EditText edt_titulo_evt, edt_descripcion_evt, edt_f_final, edt_hora_final;
+    private ImageView imagen_evt;
     private Button btn_fecha, btn_hora, btn_editar, btn_eliminar, btn_cancelar;
 
     private int dia, mes, year;
 
-    private boolean esHoy = false;
+    /* 3 Variables para el manejo de la seleccion de imagen */
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageFilePath;
+    private Bitmap imageToStore;
 
     private BaseDatos bdd;
 
@@ -106,6 +119,7 @@ public class EditarEvento extends Fragment {
             fechaLimite = evento.getFecha();
             horaLimite = evento.getHora();
             fkUsuario = evento.getFkUsuario();
+            imagen = evento.getImagen();
         }
         bdd = new BaseDatos(getContext());
     }
@@ -123,6 +137,7 @@ public class EditarEvento extends Fragment {
         edt_descripcion_evt = vista.findViewById(R.id.edt_descripcion_evt);
         edt_f_final = vista.findViewById(R.id.edt_f_final);
         edt_hora_final = vista.findViewById(R.id.edt_hora_final);
+        imagen_evt = vista.findViewById(R.id.img_evt);
 
         btn_fecha = vista.findViewById(R.id.btn_fecha);
         btn_hora = vista.findViewById(R.id.btn_hora);
@@ -147,6 +162,11 @@ public class EditarEvento extends Fragment {
         edt_descripcion_evt.setText(descripcion);
         edt_f_final.setText(fechaLimite);
         edt_hora_final.setText(horaLimite);
+        if (imagen != null) {
+            imagen_evt.setImageBitmap(imagen);
+        } else {
+            imagen_evt.setImageResource(R.drawable.reloj);
+        }
 
         btn_fecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +180,13 @@ public class EditarEvento extends Fragment {
             @Override
             public void onClick(View view) {
                 seleccionarHora();
+            }
+        });
+
+        imagen_evt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarImagen();
             }
         });
 
@@ -199,23 +226,13 @@ public class EditarEvento extends Fragment {
         String nuevaDescripcion = edt_descripcion_evt.getText().toString();
         String f_final = edt_f_final.getText().toString();
         String hora_final = edt_hora_final.getText().toString();
-        String auxiliarFecha[]; // Para comprobar la fecha
-        String auxiliarHora[];
-        Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
-
+        Bitmap imagen = null;
+        if (imageToStore != null) {
+            imagen = imageToStore;
+        }
         // Condicion para validar que todos los campos esten llenos
         if (validarEspaciosBlanco(nuevoTitulo, nuevaDescripcion, f_final, hora_final)) {
-            edt_f_final.setError(null);
-            edt_hora_final.setError(null);
-            auxiliarFecha = f_final.split("-");
-            // Condicion para comprobar si la fecha es igual o mayor a la fecha actual
-            System.out.println(String.format("Mest: %s, Dia: %s", Integer.parseInt(auxiliarFecha[1]), Integer.parseInt(auxiliarFecha[2])));
-            System.out.println(String.format("Mest: %s, Dia: %s", Integer.parseInt(auxiliarFecha[1]), Integer.parseInt(auxiliarFecha[2])));
-            edt_f_final.setError(null); // Quitar el mensaje de error
-            edt_hora_final.setError(null);
-            bdd.actualizarEvento(idEvento, nuevoTitulo, nuevaDescripcion, f_final, hora_final);
+            bdd.actualizarEvento(idEvento, nuevoTitulo, nuevaDescripcion, f_final, hora_final, imagen);
             Toast.makeText(getContext(), "Evento Actualizado Correctamente!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Debe llenar todos los campos!", Toast.LENGTH_SHORT).show();
@@ -365,6 +382,37 @@ public class EditarEvento extends Fragment {
                 }).setCancelable(true);
         AlertDialog cuadroDialogo = estructuraConfirmacion.create();
         cuadroDialogo.show();
+    }
+
+    // Proceso 7: Seleccionar una Imagen
+    private void seleccionarImagen() {
+        try {
+            Intent objectIntent = new Intent();
+            objectIntent.setType("image/*");
+
+            objectIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(objectIntent, PICK_IMAGE_REQUEST);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Proceso 8: Recibir la Imagen Seleccionada por el Usuario
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                imageFilePath = data.getData();
+                imageToStore = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageFilePath);
+                int ancho = imagen_evt.getWidth();
+                int altura = imagen_evt.getHeight();
+                Bitmap nuevaImagen = Bitmap.createScaledBitmap(imageToStore, ancho, altura, true);
+                imagen_evt.setImageBitmap(nuevaImagen);
+            }
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();;
+        }
     }
 
 }

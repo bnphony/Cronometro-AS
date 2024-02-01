@@ -48,5 +48,4 @@ dependencies {
     /* Calcular el tiempo restante */
     implementation 'com.jakewharton.threetenabp:threetenabp:1.3.0'
 
-
 }

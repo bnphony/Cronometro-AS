@@ -2,13 +2,18 @@ package com.utc.cuentaregresiva.entidades;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
 
 public class BaseDatos extends SQLiteOpenHelper {
 
     private static final String nombreBdd = "bdd_cronometro";
-    private static final int versionBdd = 1;
+    private static final int versionBdd = 2;
     private static final String tablaUsuario = "CREATE TABLE usuario(" +
             "id_usu integer primary key autoincrement, " +
             "nombre_usu text, " +
@@ -25,6 +30,10 @@ public class BaseDatos extends SQLiteOpenHelper {
             "fk_usuario integer, " +
             "foreign key(fk_usuario) references usuario(id_usu)" +
             ");";
+
+    // Variable para grabar tipo BLOB
+    private ByteArrayOutputStream imagenBlob;
+    private byte[] imageInBytes; // Esta variable se guarda en la base de datos
 
     // Constructor
     public BaseDatos(Context contexto) {
@@ -46,7 +55,9 @@ public class BaseDatos extends SQLiteOpenHelper {
         db.execSQL(tablaUsuario);
         db.execSQL("DROP TABLE IF EXISTS evento");
         db.execSQL(tablaEvento);
+//      db.execSQL("ALTER TABLE evento ADD COLUMN imagen_evt BLOB;");
     }
+
 
     // Proceso 3: metodo para insertar datos dentro de la tabla usuario, retorna true cuando inserta o false cuando hay algun error
     public boolean agregarUsuario(String nombre, String nombre_usuario, String email, String password) {
@@ -86,13 +97,36 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     // Proceso 6: Registrar un Evento
-    public boolean registrarEvento(String titulo, String descripcion, String fecha, String hora, int idUsuario) {
+    public boolean registrarEvento(String titulo, String descripcion, String fecha, String hora, int idUsuario, Bitmap imagen) {
         SQLiteDatabase miBdd = getWritableDatabase();
         if (miBdd != null) {
-            miBdd.execSQL("INSERT INTO evento(titulo_evt, descripcion_evt, f_final_evt, hora_final_evt, fk_usuario) VALUES (" +
-                    "'"+titulo+"', '"+descripcion+"', '"+fecha+"', '"+hora+"','"+idUsuario+"');");
-            miBdd.close();
-            return true;
+            try {
+                imageInBytes = null;
+
+                String insertQuery = "INSERT INTO evento(titulo_evt, descripcion_evt, f_final_evt, hora_final_evt, fk_usuario, imagen_evt) VALUES (?, ?, ?, ?, ?, ?)";
+                SQLiteStatement statement = miBdd.compileStatement(insertQuery);
+
+                statement.bindString(1, titulo);
+                statement.bindString(2, descripcion);
+                statement.bindString(3, fecha);
+                statement.bindString(4, hora);
+                statement.bindLong(5, idUsuario);
+                if (imagen != null) {
+                    imagenBlob = new ByteArrayOutputStream();
+                    imagen.compress(Bitmap.CompressFormat.JPEG, 100, imagenBlob);
+                    imageInBytes = imagenBlob.toByteArray();
+                    statement.bindBlob(6, imageInBytes);
+                } else {
+                    statement.bindNull(6);
+                }
+
+                statement.executeInsert();
+                statement.close();
+                miBdd.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -122,17 +156,42 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     // Proceso 9: Actualizar informacion de un evento
-    public boolean actualizarEvento(int idEvento, String titulo, String descripcion, String fecha, String hora) {
+    public boolean actualizarEvento(int idEvento, String titulo, String descripcion, String fecha, String hora, Bitmap imagen) {
         SQLiteDatabase bdd = getWritableDatabase();
         if (bdd != null) {
-            bdd.execSQL("UPDATE evento SET " +
-                    "titulo_evt = '"+titulo+"', " +
-                    "descripcion_evt = '"+descripcion+"', " +
-                    "f_final_evt = '"+fecha+"', " +
-                    "hora_final_evt = '"+hora+"' " +
-                    "WHERE id_evt = " + idEvento);
-            bdd.close();
-            return true;
+            try {
+                imageInBytes = null;
+
+                String updateQuery = "UPDATE evento SET " +
+                        "titulo_evt = ?, " +
+                        "descripcion_evt = ?, " +
+                        "f_final_evt = ?, " +
+                        "hora_final_evt = ?, " +
+                        "imagen_evt = ? " +
+                        "WHERE id_evt = ?";
+                SQLiteStatement statement = bdd.compileStatement(updateQuery);
+
+                statement.bindString(1, titulo);
+                statement.bindString(2, descripcion);
+                statement.bindString(3, fecha);
+                statement.bindString(4, hora);
+                if (imagen != null) {
+                    imagenBlob = new ByteArrayOutputStream();
+                    imagen.compress(Bitmap.CompressFormat.JPEG, 100, imagenBlob);
+                    imageInBytes = imagenBlob.toByteArray();
+                    statement.bindBlob(5, imageInBytes);
+                } else {
+                    statement.bindNull(5);
+                }
+                statement.bindLong(6, idEvento);
+
+                statement.executeUpdateDelete();
+                statement.close();
+                bdd.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

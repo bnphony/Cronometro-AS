@@ -1,14 +1,24 @@
 package com.utc.cuentaregresiva.fragmentos;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -29,10 +40,13 @@ import com.utc.cuentaregresiva.entidades.BaseDatos;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class CrearEvento extends Fragment {
@@ -40,7 +54,15 @@ public class CrearEvento extends Fragment {
 
     private TextView txt_id_evento;
     private EditText edt_titulo_evt, edt_descripcion_evt, edt_f_final, edt_hora_final;
+    private ImageView img_evt;
+
+    /* 3 Variables para el manejo de la seleccion de imagen */
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageFilePath;
+    private Bitmap imageToStore;
+
     private Button btn_fecha, btn_hora, btn_registrar;
+
     int dia, mes, year;
 
     SharedPreferences preferencias;
@@ -88,6 +110,7 @@ public class CrearEvento extends Fragment {
         edt_descripcion_evt = vista.findViewById(R.id.edt_descripcion_evt);
         edt_f_final = vista.findViewById(R.id.edt_f_final);
         edt_hora_final = vista.findViewById(R.id.edt_hora_final);
+        img_evt = vista.findViewById(R.id.img_evt);
 
         btn_fecha = vista.findViewById(R.id.btn_fecha);
         btn_hora = vista.findViewById(R.id.btn_hora);
@@ -123,6 +146,13 @@ public class CrearEvento extends Fragment {
             }
         });
 
+        img_evt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarImagen();
+            }
+        });
+
         btn_registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,24 +172,14 @@ public class CrearEvento extends Fragment {
         String f_final = edt_f_final.getText().toString();
         String hora_final = edt_hora_final.getText().toString();
         int fk_usuario = preferencias.getInt("id_usuario", 0);
-        String auxiliarFecha[]; // Para comprobar la fecha
-        String auxiliarHora[];
-        Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
+        Bitmap imagen = null;
+        if (imageToStore != null) {
+            imagen = imageToStore;
+        }
 
         // Condicion para validar que todos los campos esten llenos
         if (validarEspaciosBlanco(titulo, descripcion, f_final, hora_final)) {
-            edt_f_final.setError(null);
-            edt_hora_final.setError(null);
-            auxiliarFecha = f_final.split("-");
-            // Condicion para comprobar si la fecha es igual o mayor a la fecha actual
-
-            edt_f_final.setError(null); // Quitar el mensaje de error
-            auxiliarHora = hora_final.split(":");
-
-            edt_hora_final.setError(null);
-            bdd.registrarEvento(titulo, descripcion, f_final, hora_final, fk_usuario);
+            bdd.registrarEvento(titulo, descripcion, f_final, hora_final, fk_usuario, imagen);
             limpiarCampos();
             Toast.makeText(getContext(), "Nuevo Evento Registrado Correctamente!", Toast.LENGTH_SHORT).show();
             txt_id_evento.setText("ID Evento: " + bdd.conseguirCountEventos(fk_usuario));
@@ -287,4 +307,36 @@ public class CrearEvento extends Fragment {
         edt_f_final.setText("");
         edt_hora_final.setText("");
     }
+
+    // Proceso 7: Seleccionar una Imagen
+    private void seleccionarImagen() {
+        try {
+            Intent objectIntent = new Intent();
+            objectIntent.setType("image/*");
+
+            objectIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(objectIntent, PICK_IMAGE_REQUEST);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Proceso 8: Recibir la Imagen Seleccionada por el Usuario
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                imageFilePath = data.getData();
+                imageToStore = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageFilePath);
+                int ancho = img_evt.getWidth();
+                int altura = img_evt.getHeight();
+                Bitmap nuevaImagen = Bitmap.createScaledBitmap(imageToStore, ancho, altura, true);
+                img_evt.setImageBitmap(nuevaImagen);
+            }
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();;
+        }
+    }
+
 }

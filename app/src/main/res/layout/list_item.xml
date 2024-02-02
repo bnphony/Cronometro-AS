@@ -18,29 +18,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="6dp">
-            <ImageView
-                android:id="@+id/img_cv"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                app:srcCompat="@drawable/reloj"
-                android:layout_alignParentLeft="true"/>
+            android:padding="10dp">
+
+            <!-- Contenedor Informacion -->
             <LinearLayout
                 android:id="@+id/linear_cv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="178dp"
+                android:layout_height="138dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/img_cv"
-                android:orientation="vertical"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/img_cv">
+                android:layout_marginTop="0dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txt_titulo"
                     android:layout_width="match_parent"
@@ -48,46 +37,71 @@
                     android:layout_marginBottom="2dp"
                     android:text="Ejemplo"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"/>
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fecha Limite: "
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/txt_fecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fecha"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tiempo Restante: "
                     android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/txt_tiempo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tiempo: "
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txt_estado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="6dp"
-                android:layout_marginRight="6dp"
-                android:text="Activo"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+            <!-- Contenedor Imagen -->
+            <LinearLayout
+                android:id="@+id/linear_estado"
+                android:layout_width="178dp"
+                android:layout_height="129dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/linear_cv"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_estado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Activo"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_cv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    app:srcCompat="@drawable/reloj" />
+
+            </LinearLayout>
+
+
         </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

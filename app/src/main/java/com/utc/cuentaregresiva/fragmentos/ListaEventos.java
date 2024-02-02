@@ -23,7 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.utc.cuentaregresiva.R;
@@ -40,8 +42,13 @@ import java.util.List;
 
 public class ListaEventos extends Fragment {
 
-    private ListView lista_eventos;
-    private ArrayList<String> listaEventos = new ArrayList<>();
+    private TextView txt_num_pagina;
+    private Button btn_anterior, btn_siguiente;
+
+    private int pagina_actual = 1;
+    private int total_paginas = 1;
+    private int cantidad_mostrar = 10;
+
 
     private List<Evento> elementos = new ArrayList<>();
 
@@ -76,52 +83,55 @@ public class ListaEventos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista =  inflater.inflate(R.layout.fragment_lista_eventos, container, false);
+        final View vista =  inflater.inflate(R.layout.fragment_lista_eventos, container, false);
 
-//        inicializarLista();
+        /* Enlazar elementos logicos con los elementos graficos */
+        txt_num_pagina = vista.findViewById(R.id.txt_numero);
+        btn_anterior = vista.findViewById(R.id.btn_anterior);
+        btn_siguiente = vista.findViewById(R.id.btn_siguiente);
 
-        bdd = new BaseDatos(getContext());
-        consultarEventos(vista);
 
-        /*lista_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+        btn_anterior.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                eventos.moveToPosition(position);
-                int idEvento = eventos.getInt(0);
-                String tituloEvento = eventos.getString(1);
-                String descripcionEvento = eventos.getString(2);
-                String fechaLimite = eventos.getString(3);
-                String horaLimite = eventos.getString(4);
-                int fkUsuario = eventos.getInt(5);
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("id_evento", idEvento);
-                bundle.putString("titulo", tituloEvento);
-                bundle.putString("descripcion", descripcionEvento);
-                bundle.putString("fecha", fechaLimite);
-                bundle.putString("hora", horaLimite);
-                bundle.putInt("fk_usuario", fkUsuario);
-
-                EditarEvento fragment = new EditarEvento();
-                fragment.setArguments(bundle);
-
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                // Permite retroceder al fragmento reemplazado
-//                transaction.addToBackStack(null);
-                transaction.commit();
+            public void onClick(View view) {
+                pagina_actual -= 1;
+                if (pagina_actual < 1) {
+                    pagina_actual = total_paginas;
+                }
+                consultarEventos(vista);
             }
         });
-*/
+
+        btn_siguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pagina_actual += 1;
+                if (pagina_actual > total_paginas) {
+                    pagina_actual = 1;
+                }
+                consultarEventos(vista);
+            }
+        });
+
+        bdd = new BaseDatos(getContext());
+        consultarTotalEventos();
+        consultarEventos(vista);
         return vista;
     }
 
-
+    private void consultarTotalEventos() {
+        int total_eventos = bdd.totalEventos(preferencias.getInt("id_usuario", 0));
+        total_paginas = (int) Math.ceil((double) total_eventos / cantidad_mostrar);
+        txt_num_pagina.setText(String.format("%d / %d", pagina_actual, total_paginas));
+    }
 
     private void consultarEventos(View vista) {
         elementos.clear();
-        eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0));
+        eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0), pagina_actual, cantidad_mostrar);
         if (eventos != null) {
+            txt_num_pagina.setText(String.format("%d / %d", pagina_actual, total_paginas));
             do {
                 int id = eventos.getInt(0);
                 String titulo = eventos.getString(1);

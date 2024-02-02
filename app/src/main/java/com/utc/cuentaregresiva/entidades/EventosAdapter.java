@@ -106,6 +106,7 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.ViewHold
                     txt_tiempo.setText(String.format("%d Dias, %02d : %02d : %02d", 0, 0, 0, 0));
                     txt_tiempo.setTextColor(Color.parseColor("#3498db"));
                     txt_estado.setText("Finalizado");
+                    countDownTimer.cancel();
                 }
             };
             countDownTimer.start();

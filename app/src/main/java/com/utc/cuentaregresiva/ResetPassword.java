@@ -17,6 +17,5 @@ public class ResetPassword extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RecoverPassword()).commit();
 
-
     }
 }

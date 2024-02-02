@@ -144,9 +144,13 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     // Proceso 8: Consultar la lista de eventos registrados
-    public Cursor buscarEventos(int idUsuario) {
+    public Cursor buscarEventos(int idUsuario, int pagina, int cantidad) {
+        int inicio = 0;
+        inicio = (cantidad * (pagina - 1));
+        System.out.println(String.format("INICIO : %d, CANTIDAD: %d", inicio, cantidad));
         SQLiteDatabase miBdd = getReadableDatabase();
-        Cursor eventos = miBdd.rawQuery("SELECT * FROM evento WHERE fk_usuario = " + idUsuario, null);
+        Cursor eventos = miBdd.rawQuery("SELECT * FROM evento WHERE fk_usuario = " + idUsuario + " " +
+                "LIMIT "+inicio+", "+cantidad, null);
         if (eventos.moveToFirst()) {
 
 //            miBdd.close();
@@ -154,6 +158,17 @@ public class BaseDatos extends SQLiteOpenHelper {
         } else {
             return null;
         }
+    }
+    public int totalEventos(int idUsuario) {
+        SQLiteDatabase miBdd = getReadableDatabase();
+        Cursor eventos = miBdd.rawQuery("SELECT COUNT(*) FROM evento WHERE fk_usuario = " + idUsuario, null);
+        int totalEventos = 0;
+        if (eventos != null && eventos.moveToFirst()) {
+            totalEventos = eventos.getInt(0);
+            eventos.close();
+            return totalEventos;
+        }
+        return 0;
     }
 
     // Proceso 9: Actualizar informacion de un evento

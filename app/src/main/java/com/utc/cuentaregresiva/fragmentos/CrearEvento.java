@@ -70,15 +70,6 @@ public class CrearEvento extends Fragment {
 
     private BaseDatos bdd;
 
-    // Conseguir la fecha del sistema
-    private Date fecha = new Date();
-    // Dar formato a la fecha
-    CharSequence s1 = DateFormat.format("yyyy-MM-dd", fecha.getTime());
-    String fechas_auxiliar[]; //  Array para almacenar las partes de la fecha actual
-    // Array para almacenar las partes de la fecha actual transformadas a entero
-    int fechas[] = new int[3];
-
-
     public CrearEvento() {
         // Required empty public constructor
     }
@@ -121,12 +112,8 @@ public class CrearEvento extends Fragment {
         edt_f_final.setKeyListener(null);
         edt_hora_final.setKeyListener(null);
 
-        // Separar el dia, mes y anio de la fecha
-        fechas_auxiliar = String.valueOf(s1).split("-");
-        // Transformar el dia, mes y anio en entero
-        for (int i = 0; i < fechas_auxiliar.length; i++) {
-            fechas[i] = Integer.parseInt(fechas_auxiliar[i]);
-        }
+        edt_titulo_evt.requestFocus();
+
         int fk_usuario = preferencias.getInt("id_usuario", 0);
         // Colocar el id del proximo registro en el un TextView
         txt_id_evento.setText("ID Evento: " + bdd.conseguirCountEventos(fk_usuario));
@@ -302,10 +289,13 @@ public class CrearEvento extends Fragment {
 
     // Proceso 6: Metodo para limpiear todos los campos
     private void limpiarCampos() {
+        edt_titulo_evt.requestFocus();
         edt_titulo_evt.setText("");
         edt_descripcion_evt.setText("");
         edt_f_final.setText("");
         edt_hora_final.setText("");
+        imageToStore = null;
+        img_evt.setImageResource(R.drawable.reloj);
     }
 
     // Proceso 7: Seleccionar una Imagen

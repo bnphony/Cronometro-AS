@@ -148,7 +148,8 @@ public class BaseDatos extends SQLiteOpenHelper {
         SQLiteDatabase miBdd = getReadableDatabase();
         Cursor eventos = miBdd.rawQuery("SELECT * FROM evento WHERE fk_usuario = " + idUsuario, null);
         if (eventos.moveToFirst()) {
-            miBdd.close();
+
+//            miBdd.close();
             return eventos;
         } else {
             return null;
@@ -256,6 +257,17 @@ public class BaseDatos extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+    // Proceso 15: Recuperar Cuenta
+    public Cursor recuperarCuenta(String nombre_usuario, String email) {
+        SQLiteDatabase miBdd = getReadableDatabase();
+        Cursor usuario = miBdd.rawQuery("SELECT id_usu FROM usuario " +
+                "WHERE nombre_usuario_usu = '"+nombre_usuario+"' and email_usu = '"+email+"'", null);
+        if (usuario.moveToFirst()) {
+            return usuario;
+        }
+        return null;
     }
 
 

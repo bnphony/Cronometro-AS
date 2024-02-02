@@ -185,9 +185,11 @@
             <ImageView
                 android:id="@+id/img_evt"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:src="@drawable/reloj"
-                android:scaleType="centerCrop"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
                 />
 
 

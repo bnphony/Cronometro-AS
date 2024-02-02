@@ -33,7 +33,7 @@ public class MenuPrincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
-        AndroidThreeTen.init(this);
+        AndroidThreeTen.init(this); // Permite Utilizar las funciones del Cronometro en los fragmentos
 
         // Relacionar los elementos logicos con los elementos graficos
         chipNavigationBar = findViewById(R.id.bottom_nav_menu);

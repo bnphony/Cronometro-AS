@@ -25,7 +25,7 @@ import com.utc.cuentaregresiva.entidades.BaseDatos;
 
 public class IniciarSesion extends AppCompatActivity {
 
-    Button btn_crear_cuenta, btn_iniciar_sesion;
+    Button btn_crear_cuenta, btn_iniciar_sesion, btn_reset_password;
     ImageView imagen;
     TextView logo_texto, logo_titulo;
     TextInputLayout nombre_usuario, password;
@@ -53,6 +53,7 @@ public class IniciarSesion extends AppCompatActivity {
         nombre_usuario = (TextInputLayout) findViewById(R.id.txt_nombre_usuario);
         password = (TextInputLayout) findViewById(R.id.txt_password);
         btn_iniciar_sesion = (Button) findViewById(R.id.btn_iniciar);
+        btn_reset_password = (Button) findViewById(R.id.btn_reset_password);
 
         preferencias = this.getSharedPreferences("inicio_sesion", Context.MODE_PRIVATE);
         editor = preferencias.edit();
@@ -126,5 +127,10 @@ public class IniciarSesion extends AppCompatActivity {
 
     public boolean comprobarSesion() {
         return this.preferencias.getBoolean(llave, false);
+    }
+
+    public void resetPassword(View view) {
+        Intent intent = new Intent(getApplicationContext(), ResetPassword.class);
+        startActivity(intent);
     }
 }

@@ -151,6 +151,7 @@ public class ListaEventos extends Fragment {
         } else {
             Toast.makeText(getContext(), "No existen Eventos registrados", Toast.LENGTH_SHORT).show();
         }
+        eventos.close();
     }
 
     public void moveToDescription(Evento item) {

@@ -230,8 +230,23 @@ public class EditarEvento extends Fragment {
         if (imageToStore != null) {
             imagen = imageToStore;
         }
+
+
         // Condicion para validar que todos los campos esten llenos
         if (validarEspaciosBlanco(nuevoTitulo, nuevaDescripcion, f_final, hora_final)) {
+            LocalDate fechaActual = LocalDate.now();
+            LocalDate fechaLimite = LocalDate.parse(f_final);
+            LocalTime horaActual = LocalTime.now();
+            LocalTime horaLimite = LocalTime.parse(hora_final);
+            if (fechaLimite.isEqual(fechaActual) || fechaLimite.isAfter(fechaActual)) {
+                if (fechaLimite.isEqual(fechaActual)) {
+                    if (horaLimite.isAfter(horaActual)) {
+                        bdd.actualizarEstadoEvento(idEvento, "Activo");
+                    }
+                } else {
+                    bdd.actualizarEstadoEvento(idEvento, "Activo");
+                }
+            }
             bdd.actualizarEvento(idEvento, nuevoTitulo, nuevaDescripcion, f_final, hora_final, imagen);
             Toast.makeText(getContext(), "Evento Actualizado Correctamente!", Toast.LENGTH_SHORT).show();
         } else {
@@ -286,7 +301,6 @@ public class EditarEvento extends Fragment {
                     edt_hora_final.setText("");
                 } else {
                     edt_f_final.setError("La fecha debe ser igual o mayor a la fecha actual");
-                    edt_f_final.setText("");
                     Toast.makeText(getContext(), "La Fecha debe ser igual o mayor que la fecha actual!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -320,7 +334,6 @@ public class EditarEvento extends Fragment {
                         } else {
                             edt_hora_final.setError("La tiempo limite tiene que ser mayor al tiempo actual");
                             Toast.makeText(getContext(), "El tiempo limite tiene que ser mayor al tiempo actual", Toast.LENGTH_SHORT).show();
-                            edt_hora_final.setText("");
                         }
                     } else {
                         edt_hora_final.setError(null);

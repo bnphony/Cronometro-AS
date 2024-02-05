@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentos.PerfilUsuario"
-    android:background="#C31919">
+    android:background="@color/fondoFragments">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,7 +49,8 @@
                         android:gravity="center"
                         android:text="Editar Perfil del Usuario"
                         android:textSize="24sp"
-                        android:transitionName="logo_texto" />
+                        android:transitionName="logo_texto"
+                        android:textColor="@color/fondoFragments"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -58,7 +59,8 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/wave" />
+                android:background="@drawable/wave"
+                android:transitionName="wave_1"/>
             <!-- FIN ENCABEZADO -->
 
             <!--   Formulario de Editar Perfil         -->
@@ -125,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:background="#3658DF"
+                        android:background="@drawable/boton_solido_1"
                         android:text="Cambiar Password"
                         android:textColor="#FFFFFF" />
 
@@ -158,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="#3658DF"
+                        android:background="@drawable/boton_solido_1"
                         android:drawableLeft="@android:drawable/ic_menu_save"
                         android:paddingLeft="20dp"
                         android:text="Guardar"
@@ -169,8 +171,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="#8BC34A"
-                        android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+                        android:background="@drawable/boton_solido_2"
+                        android:drawableLeft="@android:drawable/ic_delete"
                         android:paddingLeft="20dp"
                         android:text="Cerrar Sesion"
                         android:textColor="#FFFFFF" />

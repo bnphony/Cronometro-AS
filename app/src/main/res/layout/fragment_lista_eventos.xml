@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentos.ListaEventos"
-    android:background="#86D129">
+    android:background="@color/fondoFragments">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,26 +42,37 @@
                     android:gravity="center"
                     android:text="Lista de Eventos"
                     android:textSize="24sp"
-                    android:transitionName="logo_texto" />
+                    android:transitionName="logo_texto"
+                    android:textColor="@color/fondoFragments"
+                    />
             </LinearLayout>
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@drawable/wave"
+            android:transitionName="wave_1"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_margin="20dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp">
 
             <Button
                 android:id="@+id/btn_anterior"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:background="@drawable/boton_redondeado"
+                android:background="@drawable/boton_solido_1"
                 android:text="Anterior"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textAllCaps="false"/>
 
             <TextView
                 android:id="@+id/txt_numero"
@@ -71,19 +82,21 @@
                 android:fontFamily="casual"
                 android:gravity="center"
                 android:text="Numero"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <Button
                 android:id="@+id/btn_siguiente"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:background="@drawable/boton_redondeado"
+                android:background="@drawable/boton_solido_1"
                 android:text="Siguiente"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textAllCaps="false"/>
         </LinearLayout>
 
         <ScrollView

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragmentos.CrearEvento"
-    android:background="#FBF1F1">
+    android:background="@color/fondoFragments">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,7 +51,8 @@
                         android:gravity="center"
                         android:text="Registrar un Evento"
                         android:textSize="24sp"
-                        android:transitionName="logo_texto" />
+                        android:transitionName="logo_texto"
+                        android:textColor="@color/fondoFragments"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -60,7 +61,8 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/wave" />
+                android:background="@drawable/wave"
+                android:transitionName="wave_1"/>
 
             <TextView
                 android:id="@+id/txt_id_evento"
@@ -125,9 +127,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:background="#3658DF"
+                    android:background="@drawable/boton_solido_1"
                     android:text="Fecha Limite"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_f_final"
@@ -161,9 +164,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:background="#3658DF"
+                    android:background="@drawable/boton_solido_1"
                     android:text="Hora Limite"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:elevation="6dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_hora_final"
@@ -206,11 +210,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="#3658DF"
+                    android:background="@drawable/boton_solido_1"
                     android:drawableLeft="@android:drawable/ic_menu_save"
                     android:paddingLeft="20dp"
                     android:text="Registrar"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    />
 
             </LinearLayout>
 

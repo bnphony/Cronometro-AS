@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 public class BaseDatos extends SQLiteOpenHelper {
 
     private static final String nombreBdd = "bdd_cronometro";
-    private static final int versionBdd = 2;
+    private static final int versionBdd = 8;
     private static final String tablaUsuario = "CREATE TABLE usuario(" +
             "id_usu integer primary key autoincrement, " +
             "nombre_usu text, " +
@@ -27,6 +27,8 @@ public class BaseDatos extends SQLiteOpenHelper {
             "descripcion_evt text, " +
             "f_final_evt text, " +
             "hora_final_evt text, " +
+            "imagen_evt BLOB, " +
+            "estado_evt TEXT DEFAULT 'Activo', " +
             "fk_usuario integer, " +
             "foreign key(fk_usuario) references usuario(id_usu)" +
             ");";
@@ -150,6 +152,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         System.out.println(String.format("INICIO : %d, CANTIDAD: %d", inicio, cantidad));
         SQLiteDatabase miBdd = getReadableDatabase();
         Cursor eventos = miBdd.rawQuery("SELECT * FROM evento WHERE fk_usuario = " + idUsuario + " " +
+                "ORDER BY estado_evt ASC, DATE(f_final_evt) DESC, TIME(hora_final_evt) DESC " +
                 "LIMIT "+inicio+", "+cantidad, null);
         if (eventos.moveToFirst()) {
 
@@ -283,6 +286,20 @@ public class BaseDatos extends SQLiteOpenHelper {
             return usuario;
         }
         return null;
+    }
+
+
+    // Proceso 16: Finalizar Evento, cuando se cumple la fecha acordada
+    public boolean actualizarEstadoEvento(int idEvento, String estado) {
+        SQLiteDatabase bdd = getWritableDatabase();
+        if (bdd != null) {
+            bdd.execSQL("UPDATE evento SET " +
+                    "estado_evt = '"+estado+"' " +
+                    "WHERE id_evt = " + idEvento);
+            bdd.close();
+            return true;
+        }
+        return false;
     }
 
 

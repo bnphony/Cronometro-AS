@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +55,7 @@ public class ListaEventos extends Fragment {
 
     BaseDatos bdd;
 
-    Cursor eventos;
+//    private Cursor eventos;
 
     SharedPreferences preferencias;
     SharedPreferences.Editor editor;
@@ -117,6 +118,10 @@ public class ListaEventos extends Fragment {
 
         bdd = new BaseDatos(getContext());
         consultarTotalEventos();
+        if (total_paginas == 1) {
+            btn_anterior.setEnabled(false);
+            btn_siguiente.setEnabled(false);
+        }
         consultarEventos(vista);
         return vista;
     }
@@ -129,8 +134,8 @@ public class ListaEventos extends Fragment {
 
     private void consultarEventos(View vista) {
         elementos.clear();
-        eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0), pagina_actual, cantidad_mostrar);
-        if (eventos != null) {
+        Cursor eventos = bdd.buscarEventos(preferencias.getInt("id_usuario", 0), pagina_actual, cantidad_mostrar);
+        if (eventos != null && eventos.getCount() > 0 && eventos.moveToFirst()) {
             txt_num_pagina.setText(String.format("%d / %d", pagina_actual, total_paginas));
             do {
                 int id = eventos.getInt(0);
@@ -138,8 +143,8 @@ public class ListaEventos extends Fragment {
                 String descripcion = eventos.getString(2);
                 String fecha = eventos.getString(3);
                 String hora = eventos.getString(4);
-                int fkUsuario = eventos.getInt(5);
-                byte[] imagenBlob = eventos.getBlob(6);
+                int fkUsuario = eventos.getInt(7);
+                byte[] imagenBlob = eventos.getBlob(5);
                 Bitmap imagenBitmap = null;
                 if (imagenBlob != null) {
                     imagenBitmap = BitmapFactory.decodeByteArray(imagenBlob, 0, imagenBlob.length);
@@ -153,15 +158,17 @@ public class ListaEventos extends Fragment {
                         moveToDescription(item);
                     }
                 });
+
                 RecyclerView recyclerView = vista.findViewById(R.id.lista_eventos);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(eventosAdapter);
             } while (eventos.moveToNext());
+            eventos.close();
         } else {
             Toast.makeText(getContext(), "No existen Eventos registrados", Toast.LENGTH_SHORT).show();
         }
-        eventos.close();
+
     }
 
     public void moveToDescription(Evento item) {

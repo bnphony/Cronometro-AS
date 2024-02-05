@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBF1F1"
+    android:background="@color/fondoFragments"
     tools:context=".fragmentos.EditarEvento">
 
     <ScrollView
@@ -48,7 +48,8 @@
                         android:gravity="center"
                         android:text="Editar Evento"
                         android:textSize="24sp"
-                        android:transitionName="logo_texto" />
+                        android:transitionName="logo_texto"
+                        android:textColor="@color/fondoFragments"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -63,7 +64,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp"
+                >
 
                 <TextView
                     android:id="@+id/txt_id_evento"
@@ -121,9 +125,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:background="#3658DF"
+                        android:background="@drawable/boton_solido_1"
                         android:text="Fecha Limite"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_f_final"
@@ -155,9 +160,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:background="#3658DF"
+                        android:background="@drawable/boton_solido_1"
                         android:text="Hora Limite"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_hora_final"
@@ -181,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:src="@drawable/reloj"
-                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="20dp"
                     />
 
                 <LinearLayout
@@ -195,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="#3658DF"
+                        android:background="@drawable/boton_solido_1"
                         android:drawableLeft="@android:drawable/ic_menu_save"
                         android:paddingLeft="20dp"
                         android:text="Editar"
@@ -206,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="#DD4848"
+                        android:background="@drawable/boton_solido_1"
                         android:drawableLeft="@android:drawable/ic_delete"
                         android:paddingLeft="20dp"
                         android:text="Eliminar"
@@ -218,7 +224,7 @@
                     android:id="@+id/btn_cancelar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#DD4848"
+                    android:background="@drawable/boton_solido_2"
                     android:paddingLeft="20dp"
                     android:text="Volver"
                     android:textColor="#FFFFFF" />

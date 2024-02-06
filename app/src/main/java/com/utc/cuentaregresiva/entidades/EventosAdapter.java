@@ -108,8 +108,7 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.ViewHold
                 this.txt_tiempo.setTextColor(colorPrimary);
                 this.txt_estado.setText("Activo");
 
-                countDownTimer = new CountDownTimer(totalMilis, 1000) {
-                    @Override
+                countDownTimer = new CountDownTimer(totalMilis, 1000) {@Override
                     public void onTick(long milisHastaFinalizar) {
                         String tiempo = millisToString(milisHastaFinalizar);
                         txt_tiempo.setText(tiempo);

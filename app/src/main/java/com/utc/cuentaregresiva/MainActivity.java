@@ -34,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString("estado").equals("menu_principal")) {
+                Intent intent = new Intent(MainActivity.this, IniciarSesion.class);
+                startActivity(intent);
+                finish();
+            }
+        }
 
         // Mapear o instanciar los componentes
         top_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_animation);
@@ -73,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, pairs);
                 startActivity(intent, options.toBundle());
-//                finish();
+                finish();
             }
         }, SPLASH_SCREEN);
 

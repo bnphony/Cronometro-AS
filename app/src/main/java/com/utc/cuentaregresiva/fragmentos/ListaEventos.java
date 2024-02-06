@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,8 +44,9 @@ import java.util.List;
 
 public class ListaEventos extends Fragment {
 
-    private TextView txt_num_pagina;
+    private TextView txt_num_pagina, txt_titulo;
     private Button btn_anterior, btn_siguiente;
+    private ImageView img_logo;
 
     private int pagina_actual = 1;
     private int total_paginas = 1;
@@ -88,6 +90,9 @@ public class ListaEventos extends Fragment {
 
         /* Enlazar elementos logicos con los elementos graficos */
         txt_num_pagina = vista.findViewById(R.id.txt_numero);
+        txt_titulo = vista.findViewById(R.id.txt_titulo);
+        img_logo = vista.findViewById(R.id.img_logo);
+
         btn_anterior = vista.findViewById(R.id.btn_anterior);
         btn_siguiente = vista.findViewById(R.id.btn_siguiente);
 
@@ -180,8 +185,10 @@ public class ListaEventos extends Fragment {
 
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
+        transaction.addSharedElement(img_logo, "logo_imagen");
+        transaction.addSharedElement(txt_titulo, "logo_texto");
         // Permite retroceder al fragmento reemplazado
-//      transaction.addToBackStack(null);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

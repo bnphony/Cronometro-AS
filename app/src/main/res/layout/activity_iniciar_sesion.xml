@@ -39,6 +39,7 @@
                 android:gravity="center"
                 android:text="Cronometro"
                 android:textSize="40sp"
+                android:textColor="@color/fondoFragments"
                 android:transitionName="logo_texto"></TextView>
 
         </LinearLayout>
@@ -51,6 +52,7 @@
             android:gravity="center"
             android:text="Inicio de Sesion"
             android:textSize="18sp"
+            android:textColor="@color/fondoFragments"
             android:transitionName="logo_titulo"></TextView>
 
     </LinearLayout>
@@ -75,7 +77,8 @@
             android:layout_height="wrap_content"
             android:hint="Nombre de Usuario"
             android:transitionName="tran_nombre"
-            app:boxStrokeColor="#FFC107">
+
+            app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_nombre_usuario"
@@ -95,7 +98,7 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:transitionName="tran_password"
-            app:boxStrokeColor="#FFC107"
+            app:boxStrokeColor="@color/colorPrimary"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -121,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/boton_redondeado_1"
+            android:background="@drawable/boton_redondeado"
             android:onClick="iniciarSesion"
             android:text="Iniciar Sesion"
             android:textColor="#ffffff"

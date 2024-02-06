@@ -82,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                app:boxStrokeColor="@color/colorPrimary"
                 android:hint="Ingrese el Titulo">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -98,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                app:boxStrokeColor="@color/colorPrimary"
                 android:hint="Ingrese una Descripcion">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese la Fecha Limite">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -176,6 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese la Hora Limite">
 
                     <com.google.android.material.textfield.TextInputEditText

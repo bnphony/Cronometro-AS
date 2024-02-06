@@ -25,12 +25,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/fondo_app"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -84,13 +87,16 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese el Titulo">
+                    android:hint="Ingrese el Titulo"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:passwordToggleTint="#8BC34A">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_titulo_evt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
+                        android:inputType="text"
+                        ></com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -98,6 +104,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese una Descripcion">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -137,6 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        app:boxStrokeColor="@color/colorPrimary"
                         android:hint="Ingrese la Fecha Limite">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -172,6 +180,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        app:boxStrokeColor="@color/colorPrimary"
                         android:hint="Ingrese la Hora Limite">
 
                         <com.google.android.material.textfield.TextInputEditText

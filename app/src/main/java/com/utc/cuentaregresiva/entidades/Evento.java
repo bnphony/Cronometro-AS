@@ -14,7 +14,7 @@ public class Evento implements Serializable {
     private String hora;
     private String estado;
     private int fkUsuario;
-    private Bitmap imagen;
+    private transient Bitmap imagen;
 
 
     public Evento(int idEvento, String color, String titulo, String descripcion, String fecha, String hora, String estado, int fkUsuario, Bitmap imagen) {

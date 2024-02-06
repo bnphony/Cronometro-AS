@@ -31,7 +31,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -76,6 +78,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese un Nombre Completo">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -91,6 +94,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese un Nombre de Usuario">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -106,6 +110,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/colorPrimary"
                     android:hint="Ingrese un Email">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -139,6 +144,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="Ingrese el password"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:passwordToggleEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText

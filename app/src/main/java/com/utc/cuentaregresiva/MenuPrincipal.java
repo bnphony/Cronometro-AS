@@ -19,6 +19,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.utc.cuentaregresiva.fragmentos.CrearEvento;
 import com.utc.cuentaregresiva.fragmentos.EditarEvento;
 import com.utc.cuentaregresiva.fragmentos.ListaEventos;
+import com.utc.cuentaregresiva.fragmentos.OnBackPressedListener;
 import com.utc.cuentaregresiva.fragmentos.PerfilUsuario;
 
 public class MenuPrincipal extends AppCompatActivity {
@@ -85,12 +86,37 @@ public class MenuPrincipal extends AppCompatActivity {
                 }
                 System.out.println("Ingresar: " + valor);
                 // Clear the back stack before replacing the fragment
+
                 getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 // Colocar el fragmento seleccionado del Menu
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, valor).commit();
             }
         });
+    }
+
+    @Override
+    protected  void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("estado", "menu_principal");
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        /* Decidir cual onBackPressed() utilizar, si el de activity o el de algun fragmento */
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof OnBackPressedListener) {
+            if (((OnBackPressedListener) currentFragment).onBackPressed()) {
+                super.onBackPressed();
+                return;
+            }
+        }
+
+        /* Mover la actividad a segundo plano */
+        moveTaskToBack(true);
+
     }
 
 }

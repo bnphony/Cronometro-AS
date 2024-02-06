@@ -43,12 +43,14 @@ import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditarEvento#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditarEvento extends Fragment {
+public class EditarEvento extends Fragment implements OnBackPressedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -204,6 +206,7 @@ public class EditarEvento extends Fragment {
             }
         });
 
+        // Boton Volver
         btn_cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -428,4 +431,17 @@ public class EditarEvento extends Fragment {
         }
     }
 
+
+    // Retorna True si esto quieres usar este codigo
+    // Retorna False si quieres usar el comportamiento de la actividad
+    @Override
+    public boolean onBackPressed() {
+//        ListaEventos fragment = new ListaEventos();
+//        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_container, fragment, "lista");
+//        transaction.commit();
+        return true;
+    }
 }
+
+

@@ -26,82 +26,56 @@
   - [Licencia de Uso](#licencia-de-uso)
 
 ## Descripción
-Este proyecto es una Aplicación Móvil para gestionar la venta de diferentes productos. Creada en Android Studio, desarrollada con lenguaje Java.
-Funciones Principales:
- - Inicio de sesión, mantiene activa la sesión.
- - Creación de una cuenta de usuario.
- - CREATE, LIST, UPDATE, DELETE productos.
- - CREATE, LIST, UPDATE, DELETE clientes.
- - CREATE, LIST ventas.
- - Cuadro de Dialogo que afecta a la pantalla principal.
+Este proyecto es una Aplicación Móvil para establecer y visualizar el tiempo limite hasta que se cumpla un evento. Creada en Android Studio, utilizando el lenguage Java.
+Las funciones principales:
+- Inicio de sesión, mantiene activa la sesión.
+- Creación de una cuenta de Usuario.
+- CREATE, LIST, UPDATE, DELETE eventos.
+- Uso de fragmentos para agilizar el desplazamiento entre pantallas.
+- Almacenamiento de images.
+- Visualización del tiempo limite en tiempo real.
+- Utilización de CardView y RecyclerView.
    
 ### Tecnologías
 
 - Lenguaje de Programación: [Java](https://www.java.com/es/) - Lenguaje predeterminado de Android Studio.
 - Base de Datos: [SQLite3](https://developer.android.com/tools/sqlite3?hl=es-419) - Administrar la base de datos de la aplicación.
-- Material Design: EditText - Android.material:1.0.0, ImageView - CircleImageView:3.1.0
+- Material Design: EditText - Android.material:1.0.0
+- Menú Principal: [Chip Navigation](https://github.com/ismaeldivita/chip-navigation-bar) - Menú Flotante para cambiar entre fragmentos.
+- Lista de Eventos: RecyclerView:1.1.0 y CardView:1.0.0
+- Calcular el tiempo restante: [threetenbp](https://github.com/JakeWharton/ThreeTenABP) : 1.3.0
+- Diseño de PIN de acceso: [pinview](https://github.com/ChaosLeung/PinView) : 1.4.3 - crear interfaz para insersar clave de acceso mediante el uso de un PIN.
   
 ## Dominio
 
-Gestionar usuarios, productos, clientes y ventas, sabemos que:
-- Un cliente puede comprar uno o varios productos.
-- Varios productos pueden ser vendido a un cliente en una sola venta.
-- Una Venta es realizada por un cliente y contiene varios productos.
-- Un usuario puede crearse una cuenta para acceder al sistema, iniciar sesión, crear productos, registrar clientes y registrar ventas.
+Gestionar usuarios, y eventos, sabemos que:
 
-### Cliente
+- Un evento es registrado por un usuario, tiene su descripcion, fecha y hora limite, y una imagen que lo represente.
+- Un usuario puede crearse una cuenta para acceder al sistema, iniciar sesión, editar su perfil, cambiar y recuperar su contraseña..
 
-| Campo     | Tipo   | Descripción              |
-|-----------|--------|--------------------------|
-| id        | UUID   | Identificador único      |
-| nombre    | text   | Nombre del Cliente       |
-| apellido  | text   | Apellido del Cliente     |
-| cedula    | text   | Cédula del Cliente       |
-| telefono  | text   | Teléfono del Cliente     |
-| direccion | text   | Dirección del Cliente    |
+### Evento
 
-### Producto
-
-| Campo       | Tipo   | Descripción                        |
-|-------------|--------|------------------------------------|  
-| id          | UUID   | Identificador único                |
-| nombre      | text   | Nombre del Producto                |
-| descripcion | text   | Descripción del Producto           |
-| precio      | real   | Precio del Producto                |
-| iva         | real   | IVA del Producto                   |
-| stock       | text   | Cantidad del Producto              |
-| f_caducidad | text   | Fecha de Caducidad del Producto    |
-
-### Venta
-
-| Campo       | Tipo    | Descripción                   |
-|-------------|---------|-------------------------------|
-| id          | UUID    | Identificador único           |
-| titulo      | text    | Título de la Venta            |
-| fecha       | text    | Fecha de la Venta             |
-| estado      | text    | Estado de la Venta            |
-| total       | real    | Precio Total de la Venta      |
-| observacion | text    | Observación de la Venta       |
-| fk_cliente  | Cliente | Cliente de la Venta (no nulo) |
-
-### Productos Vendidos
-
-| Campo       | Tipo     | Descripción                                      |
-|-------------|----------|--------------------------------------------------|
-| id          | UUID     | Identificador único                              |
-| cantidad    | real     | Cantidad del producto vendido                    |
-| sub_total   | real     | Precio Total de la Venta antes de aplicar el IVA |
-| fk_producto | Producto | Producto Vendido (no nulo)                       |
-| fk_venta    | Venta    | Venta del Producto (no nulo)                     |
+| Campo       | Tipo    | Descripción            |
+|-------------|---------|------------------------|
+| id          | UUID    | Identificar único      |
+| titulo      | text    | Título del Evento      |
+| descripcion | text    | Descripción del Evento |
+| f_final     | text    | Fecha Final del Evento |
+| hora_final  | text    | Hora Final del evento  |
+| imagen      | blob    | Imagen del Evento      |
+| estado      | text    | Estado del Evento      |
+| fk_usuario  | Usuario | Usuario del Evento     |
 
 ### Usuario
 
-| Campo    | Tipo | Descripción            |
-|----------|------|------------------------|
-| id       | UUID | Identificador único    |
-| nombre   | text | Nombre del Usuario     |
-| email    | text | Email del Usuario      |
-| password | text | Contraseña del Usuario |
+| Campo     | Tipo | Descripción              |
+|-----------|------|--------------------------|
+| id        | UUID | Identificador único      |
+| nombre    | text | Nombre del Usuario       |
+| user_name | text | Nombre único del Usuario |
+| email     | text | Email del Usuario        |
+| password  | text | Contraseña del Usuario   |
+
 
 ## Funciones
 <table>

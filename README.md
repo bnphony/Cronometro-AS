@@ -10,20 +10,19 @@
 </div>
 
 ## Indice
+
 - [Cronometro de Eventos App Móvil](#cronometro-de-eventos-app-móvil)
   - [Descripción](#descripción)
     - [Tecnologías](#tecnologías)
   - [Dominio](#dominio)
-    - [Cliente](#cliente)
-    - [Producto](#producto)
-    - [Venta](#venta)
-    - [Productos Vendidos](#productos-vendidos)
+    - [Evento](#evento)
     - [Usuario](#usuario)
   - [Funciones](#funciones)
     - [Probar la Aplicación](#probar-la-aplicación)
   - [Autor](#autor)
     - [Contacto](#contacto)
   - [Licencia de Uso](#licencia-de-uso)
+
 
 ## Descripción
 Este proyecto es una Aplicación Móvil para establecer y visualizar el tiempo limite hasta que se cumpla un evento. Creada en Android Studio, utilizando el lenguage Java.
@@ -83,7 +82,7 @@ Gestionar usuarios, y eventos, sabemos que:
     <td witdh="50%">
       <h3 align="center">Splash Screen</h3>
       <div align="center">
-        <img src="./img_ventas/splash_screen.png" width="200" alt="Splash Screen">
+        <img src="./img_app/splash_screen.png" width="200" alt="Splash Screen">
         <p>
           - Primera pantalla de la aplicación, animación de cierre entre el icono de la aplicación y el nombre de la misma.
         </p>
@@ -92,7 +91,7 @@ Gestionar usuarios, y eventos, sabemos que:
     <td witdh="50%">
       <h3 align="center">Inicio de Sesión</h3>
       <div align="center">
-        <img src="./img_ventas/login.png" width="200" alt="Splash Screen">
+        <img src="./img_app/login.png" width="200" alt="Login Screen">
         <p>
           - Pantalla de Inicio de Sesión, solo pueden ingresar usuarios que esten registrados en la base de datos.<br/>
           - Opción de mantener activa la sesión, incluso si se cierra la aplicación.
@@ -105,65 +104,75 @@ Gestionar usuarios, y eventos, sabemos que:
     <td witdh="50%">
       <h3 align="center">Crear un Usuario</h3>
       <div align="center">
-        <img src="./img_ventas/crear_usuario.png" width="200" alt="Splash Screen">
+        <img src="./img_app/create_account.png" width="200" alt="Create Account Screen">
         <p>
           - Crear una cuenta de usuario para acceder a la aplicación. Campo de confirmación de contraseña.
         </p>
       </div>
     </td>
     <td witdh="50%">
-      <h3 align="center">Menú Principal</h3>
+      <h3 align="center">Resetear Constraseña</h3>
       <div align="center">
-        <img src="./img_ventas/main_menu.png" width="200" alt="Splash Screen">
+        <img src="./img_app/recorver_password.png" width="200" alt="Reset Password Screen">
         <p>
-          - Saludo de bienvenida al usuario. Opciones: Gestión de Clientes, Gestión de Productos, Gestión de Ventas y Opción para Cerrar Sesión. 
+          - Resetear la contraseña utilizando el username y el email.
         </p>
       </div>
-    </td>
+    </td>    
   </tr>
 
   
   <tr>
-    <td witdh="50%">
-      <h3 align="center">Gestión de Clientes</h3>
+  <td witdh="50%">
+      <h3 align="center">Lista de Eventos</h3>
       <div align="center">
-        <img src="./img_ventas/create_client.png" width="200" alt="Splash Screen">
+        <img src="./img_app/list_events.png" width="200" alt="List Events Screen">
         <p>
-          - CREATE, LIST, UPDATE, DELETE clientes.
+          - Lista de Eventos Creados, paginados para una mejor organización.<br/>
+          - Menu Flotante con las opciones: 1. Lista de Eventos, 2. Crear Evento Nuevo, 3. Perfil del Usuario.
         </p>
       </div>
-    </td>
+    </td>   
     <td witdh="50%">
-      <h3 align="center">Gestión de Productos</h3>
+      <h3 align="center">Crear Nuevo Evento</h3>
       <div align="center">
-        <img src="./img_ventas/create_product.png" width="200" alt="Splash Screen">
+        <img src="./img_app/create_event.png" width="200" alt="Create Event Screen">
         <p>
-          - CREATE, LIST, UPDATE, DELETE productos. </br>
-        - La fecha de caducidad no puede ser menor que la fecha actual. 
-        </p>
-      </div>
-    </td>
-  </tr>
-
-  <tr>
-    <td witdh="100%" colspan="2">
-      <h3 align="center">Gestión Ventas</h3>
-      <div align="center">
-        <img src="./img_ventas/create_sale.png" width="200" alt="Splash Screen">
-        <p>
-          - CREATE, LIST Ventas
-          - Uso de Dialog para seleccionar el producto y la cantidad a vender.<br/>
-          - Seleccionar el cliente de la venta.
+          - Crear un nuevo evento, nombre, descripción, fecha y hora limites. <br/>
+          - La imagen del evento se puede seleccionar de la galería del dispositivo.
         </p>
       </div>
     </td>
     
   </tr>
+
+  <tr>
+  <td witdh="50%">
+      <h3 align="center">Editar o Eliminar un Evento</h3>
+      <div align="center">
+        <img src="./img_app/update_delete_event.png" width="200" alt="Update/Delete Event Screen">
+        <p>
+          - Actualizar o Eliminar un Evento.         
+        </p>
+      </div>
+    </td>
+    <td witdh="50%">
+      <h3 align="center">Perfil del Usuario</h3>
+      <div align="center">
+        <img src="./img_app/user_profile.png" width="200" alt="User Profile Screen">
+        <p>
+          - Ver o Actualizar Usuario de la sesión actual.<br/>   
+          - Se utiliza un cuadro de dialogo para actualizar la contraseña.
+        </p>
+      </div>
+    </td>
+  
+  </tr>
 </table>
 
 ### Probar la Aplicación
 
-[Descargar la aplicación](https://github.com/bnphony/Ventas-AS/tree/master/img_ventas/app.apk)
+[Descargar la aplicación](https://github.com/bnphony/Cronometro-AS/tree/master/img_app/CronometroApp.apk)
 
 
 

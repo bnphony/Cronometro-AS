@@ -12,8 +12,4 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/design_default_color_primary</item>
     </style>
-
-    <style name="resetPasswordTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
-    </style>
 </resources>
